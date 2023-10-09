@@ -22,20 +22,22 @@ const getPlayers = async () => {
 
 const client = new Client({ intents: [] });
 const updateStatus = async () => {
+	const user = client.user;
+	if (!user) return;
 	const server = await getServer();
 	if (server) {
 		const players = await getPlayers();
-		client.user?.setPresence({
+		user.setPresence({
 			activities: [
 				{
-					name: `${players.length}人がARK`,
+					name: `${players.length}人が${server.map}`,
 					type: ActivityType.Playing,
 				},
 			],
 			status: players.length ? "online" : "idle",
 		});
 	} else {
-		client.user?.setPresence({
+		user.setPresence({
 			status: "dnd",
 			activities: [{ name: `サーバーオフライン`, type: ActivityType.Custom }],
 		});
